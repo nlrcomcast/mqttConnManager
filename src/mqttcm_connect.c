@@ -1855,7 +1855,7 @@ int regMqttDataModel()
 	{
 		MqttCMInfo("regMqttDataModel success %s,%s\n", MQTT_BROKER_PARAM, MQTT_PORT_PARAM);
 		//Adding mqttcm integration in the initial phase and webconfig integration will be done later, so disabling webconfig tr181s
-		//rbusRegWebcfgDataElements();
+		rbusRegWebcfgDataElements();
 		fetchMqttParamsFromDB();
 	}
 	else
