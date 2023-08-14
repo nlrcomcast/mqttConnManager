@@ -42,6 +42,7 @@ set(TEST_RESULTS_DIR ${CMAKE_CURRENT_BINARY_DIR}/test_results)
 file(MAKE_DIRECTORY ${TEST_RESULTS_DIR})
 
 include_directories(${INCLUDE_DIR}
+                    ${INCLUDE_DIR}/cjson
                     ${INCLUDE_DIR}/mosquitto
                     ${INCLUDE_DIR}/rbus
 		    ${INCLUDE_DIR}/rtmessage
@@ -73,6 +74,16 @@ ExternalProject_Add(cimplog
 add_library(libcimplog STATIC SHARED IMPORTED)
 add_dependencies(libcimplog cimplog)
 
+# cJSON external dependency
+#-------------------------------------------------------------------------------
+ExternalProject_Add(cJSON
+    PREFIX ${PREFIX_DIR}/cJSON
+    GIT_REPOSITORY https://github.com/DaveGamble/cJSON.git
+    GIT_TAG "39853e5148dad8dc5d32ea2b00943cf4a0c6f120"
+    CMAKE_ARGS += -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
+)
+add_library(libcJSON STATIC IMPORTED)
+add_dependencies(libcJSON cJSON)
 
 # rbus external dependency
 #-------------------------------------------------------------------------------
@@ -97,6 +108,7 @@ link_directories ( ${LIBRARY_DIR} ${COMMON_LIBRARY_DIR} ${LIBRARY_DIR64} )
 
 
 add_subdirectory(src)
+add_subdirectory(lib)
 
 if (BUILD_TESTING)
 	add_subdirectory(tests)

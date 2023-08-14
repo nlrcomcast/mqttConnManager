@@ -12,10 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-set(PROJ_WEBCFG mqttConnManager)
+set(PROJ_MQTTCMLIB mqttcm_lib)
 
-set(HEADERS mqttcm_connect.h mqttcm_log.h mqttcm_privilege.h mqttcm_generic.h mqttcm_webcfg.h)
-set(SOURCES main.c mqttcm_connect.c mqttcm_privilege.c mqttcm_generic.c mqttcm_webcfg.c)
+get_filename_component(PARENT_DIR ../ ABSOLUTE)
+include_directories(${PARENT_DIR}/src)
 
 if (NOT DEVICE_EXTENDER)
 set(COMMON_LIBS ${COMMON_LIBS} -lcimplog)
@@ -23,9 +23,14 @@ else ()
 add_definitions(-DDEVICE_EXTENDER)
 endif()
 
-add_executable(mqttConnManager ${SOURCES} ${HEADERS})
-set_property(TARGET mqttConnManager PROPERTY C_STANDARD 99)
-set(COMMON_LIBS -lpthread -lrbus -lmosquitto -luuid -lcjson)
+set(HEADERS mqttcm_conn.h ${PARENT_DIR}/src/mqttcm_log.h)
+set(SOURCES mqttcm_conn.c)
 
-target_link_libraries (mqttConnManager ${CMAKE_THREAD_LIBS_INIT} ${COMMON_LIBS})
-install (TARGETS mqttConnManager DESTINATION bin)
+add_library(${PROJ_MQTTCMLIB}.shared SHARED ${HEADERS} ${SOURCES})
+set_target_properties(${PROJ_MQTTCMLIB}.shared PROPERTIES OUTPUT_NAME ${PROJ_MQTTCMLIB})
+set_property(TARGET ${PROJ_MQTTCMLIB}.shared PROPERTY C_STANDARD 99)
+set(COMMON_LIBS -lpthread -lrbus -lmosquitto -luuid -lz)
+
+target_link_libraries (${PROJ_MQTTCMLIB}.shared ${CMAKE_THREAD_LIBS_INIT} ${COMMON_LIBS})
+install (TARGETS ${PROJ_MQTTCMLIB}.shared DESTINATION lib${LIB_SUFFIX})
+install (FILES ${HEADERS} DESTINATION include/${PROJ_MQTTCMLIB})

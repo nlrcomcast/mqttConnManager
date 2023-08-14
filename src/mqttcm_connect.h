@@ -37,7 +37,9 @@
 #include <rbus/rbus_object.h>
 #include <rbus/rbus_property.h>
 #include <rbus/rbus_value.h>
+#if ! defined(DEVICE_EXTENDER)
 #include <cimplog.h>
+#endif
 #include <uuid/uuid.h>
 
 #define MQTT_COMPONENT_NAME  "mqttConnManager"
@@ -132,3 +134,4 @@ void get_interface(char **interface);
 pthread_cond_t *get_global_mqtt1_con(void);
 pthread_mutex_t *get_global_mqtt1_mut(void);
 rbusHandle_t get_global_rbus_handle(void);
+void stripAndAddModuleName(char *str, const char *substr, const char *newstr);
