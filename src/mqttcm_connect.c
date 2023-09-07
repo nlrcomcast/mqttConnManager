@@ -1660,6 +1660,7 @@ char* GetTopicFromSubcribeId(int subscribeId)
 
 int UpdateSubscriptionIdToList(char *comp, int subscribeId)
 {
+<<<<<<< HEAD
         comp_topic_name_t* temp = g_head;
         while (temp != NULL)
         {
@@ -1672,6 +1673,20 @@ int UpdateSubscriptionIdToList(char *comp, int subscribeId)
                 }
                 temp = temp->next;
         }
+=======
+	comp_topic_name_t* temp = g_head;
+	while (temp != NULL)
+	{
+		if(strcmp(temp->compName, comp) == 0)
+		{
+			temp->subscribeId = subscribeId;
+			temp->subscribeOnFlag = 1;
+			MqttCMInfo("The component %s is subscribed to topic %s with subscribeId %d\n", temp->compName, temp->topic, subscribeId);
+			return 1;
+		}
+		temp = temp->next;
+	}
+>>>>>>> upstream/main
         return 0;
 }
 
