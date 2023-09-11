@@ -70,6 +70,7 @@ jobs:
           ./tests/test_mqttcm_component -a
           ./tests/test_mqttcm_timer -a
           ./tests/test_mqttcm_generic -a
+          ./tests/test_mqttcm_component -a
 
       - name: Stop rtrouted
         run: |
