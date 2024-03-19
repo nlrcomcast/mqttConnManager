@@ -165,6 +165,7 @@ bool mqttCMConnectBroker()
 	int rt = 0;
 	char *bind_interface = NULL;
 	char *hostip = NULL;
+	FILE *fp = NULL;
 
 	checkMqttParamSet();
 	
@@ -183,22 +184,23 @@ bool mqttCMConnectBroker()
 			MqttCMInfo("clientId is %s username is %s\n", clientId, username);
 
 			//execute_mqtt_script(OPENSYNC_CERT);
-			const char *testfile = "/tmp/testmqttfile";
-			if (!freopen(testfile, "r", stdin))
+			//const char *testfile = "/tmp/testmqttfile";
+			fp=fopen("/dev/stdin", "r" );
+			if (!fp)
 			{
 				perror("freopen failed\n");
 				return EXIT_FAILURE;
 			}
 
 			int value;
-			while (scanf("%d", &value) == 1)
+			while (fscanf(fp,"%d", &value) == 1)
 			{
 				// Process the data as needed
 				MqttCMInfo("Read value: %d\n", value);
 			}
 
 			// Close the redirected stdin
-			fclose(stdin);
+			fclose(fp);
 
 			if(clientId !=NULL)
 			{
