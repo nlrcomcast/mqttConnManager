@@ -879,7 +879,7 @@ void get_from_file(char *key, char **val, char *filepath)
         }
         else
         {
-                MqttCMInfo("%s val fetched from %s\n",key, filepath);
+                MqttCMInfo("%s=%s, val fetched from %s\n", key, *val, filepath);
         }
 }
 
